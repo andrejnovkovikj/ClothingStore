@@ -37,7 +37,7 @@
                         <a class="nav-link" href="/register/">REGISTER</a>
                     </th:block>
                     <th:block sec:authorize="isAuthenticated()">
-                        <a class="nav-link" href="/shopping-cart">CART</a>
+                        <a class="nav-link" href="/cart">CART</a>
                         <span class="nav-link">LOGGED IN AS:</span>
                         <a class="nav-link" th:text="${#authentication.name}"></a>
                         <a class="nav-link" href="/logout">LOGOUT</a>
