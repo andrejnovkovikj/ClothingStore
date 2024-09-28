@@ -13,23 +13,40 @@
     }
 </style>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">HOME</a>
-        <div class="navbar-nav justify-content-center">
-            <a class="navbar-brand" href="/shop/">SHOP</a>
-            <a class="navbar-brand" href="#">ABOUT US</a>
-            <a class="navbar-brand" href="/login/">LOGIN</a>
-            <a class="navbar-brand" href="/register/">REGISTER</a>
-            <th:block th:if="${session.user!=null}">
-                <a class="navbar-brand" href="/shopping-cart">CART</a>
-                <a class="navbar-brand">LOGGED IN AS: </a>
-                <a class="navbar-brand"th:text="${session.user.username}" ></a>
-            </th:block>
-            <a class="navbar-brand" href="/logout">LOGOUT</a>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Coral 9
+                <h1 class="text-white" style="font-size:10px;">Andrej Novkovikj</h1>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="/manufacturers" sec:authorize="hasRole('ROLE_ADMIN')">Manufacturers</a>
+                    <a class="nav-link" href="/categories" sec:authorize="hasRole('ROLE_ADMIN')">Categories</a>
+                    <a class="nav-link" href="/all-products" sec:authorize="hasRole('ROLE_ADMIN')">Products</a>
+                    <a class="nav-link" href="/shop/">SHOP</a>
+                    <a class="nav-link" href="#">ABOUT US</a>
+                    <th:block sec:authorize="isAnonymous()">
+                        <a class="nav-link" href="/login/">LOGIN</a>
+                        <a class="nav-link" href="/register/">REGISTER</a>
+                    </th:block>
+                    <th:block sec:authorize="isAuthenticated()">
+                        <a class="nav-link" href="/shopping-cart">CART</a>
+                        <span class="nav-link">LOGGED IN AS:</span>
+                        <a class="nav-link" th:text="${#authentication.name}"></a>
+                        <a class="nav-link" href="/logout">LOGOUT</a>
+                    </th:block>
+                </div>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+
+</header>
 
 
 <div class="container">
@@ -37,112 +54,93 @@
 </div>
 <div class="container">
     <form class="form-signin mt-xl-5" method="post" action="/add">
-        <h2 class="form-signin-heading">Add a product</h2>
-        <div class="col-md-4">
-        <p>
-            <label for="id" class="sr-only">Id</label>
-            <input type="text" id="id" name="id" class="form-control"  required=""
-                   autofocus="">
-        </p>
+        <h2 class="form-signin-heading text-center">Add a Product</h2>
+
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label for="id" class="sr-only">Id</label>
+                <input type="text" id="id" name="id" class="form-control" th:value="${nextId}" readonly required>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="name" class="sr-only">Name</label>
+                <input type="text" id="name" name="name" class="form-control" required="">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="description" class="sr-only">Description</label>
+                <input type="text" id="description" name="description" class="form-control" required="">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="image_url" class="sr-only">Image</label>
+                <input type="text" id="image_url" name="image_url" class="form-control" required="">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="categoryId" class="sr-only">CategoryId</label>
+                <select id="categoryId" name="categoryId" class="form-control" required>
+                    <option value="" disabled selected>Select a Category</option>
+                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">Category Name</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="manufacturerId" class="sr-only">Manufacturer Id</label>
+                <select id="manufacturerId" name="manufacturerId" class="form-control" required>
+                    <option value="" disabled selected>Select a Manufacturer</option>
+                    <option th:each="manufacturer : ${manufacturers}" th:value="${manufacturer.id}" th:text="${manufacturer.name}">Manufacturer Name</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="color" class="sr-only">Color</label>
+                <select id="color" name="color" class="form-control" required="">
+                    <option value="" disabled selected>Select a Color</option>
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+                    <option value="blue">Blue</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="orange">Orange</option>
+                    <option value="purple">Purple</option>
+                    <option value="pink">Pink</option>
+                    <option value="black">Black</option>
+                    <option value="white">White</option>
+                    <option value="gray">Gray</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="size" class="sr-only">Size</label>
+                <select id="size" name="size" class="form-control" required="">
+                    <option value="" disabled selected>Select Size</option>
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="sex" class="sr-only">Sex</label>
+                <select id="sex" name="sex" class="form-control" required="">
+                    <option value="" disabled selected>Select Sex</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="unisex">Unisex</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="price" class="sr-only">Price</label>
+                <input type="text" id="price" name="price" class="form-control" required="" autofocus="">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="stock" class="sr-only">Stock</label>
+                <input type="text" id="stock" name="stock" class="form-control" required="" autofocus="">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="dateAdded" class="sr-only">Date</label>
+                <input type="date" id="dateAdded" name="dateAdded" class="form-control" required="" autofocus="">
+            </div>
         </div>
-        <div class="col-md-4">
-        <p>
-            <label for="name" class="sr-only">Name</label>
-            <input type="text" id="name" name="name" class="form-control" required=""
-                   autofocus="">
-        </p>
-        </div>
-        <div class="col-md-4">
-        <p>
-            <label for="description" class="sr-only">Description</label>
-            <input type="text" id="description" name="description" class="form-control"
-                   required="">
-        </p>
-        </div>
-        <div class="col-md-4">
-        <p>
-            <label for="image_url" class="sr-only">Image</label>
-            <input type="text" id="image_url" name="image_url" class="form-control"
-                    required="">
-        </p>
-        </div>
-        <div class="col-md-4">
-        <p>
-            <label for="categoryId" class="sr-only">CategoryId</label>
-            <input type="text" id="categoryId" name="categoryId" class="form-control"  required="" autofocus="">
-        </p>
-        </div>
-        <div class="col-md-4">
-        <p>
-            <label for="manufacturerId" class="sr-only">ManufacturerId</label>
-            <input type="text" id="manufacturerId" name="manufacturerId" class="form-control"required=""
-                   autofocus="">
-        </p>
-        </div>
-        <div class="col-md-4">
-        <p>
-            <label for="color" class="sr-only">Color</label>
-            <input type="text" id="color" name="color" class="form-control" required=""
-                   autofocus="">
-        </p>
-        </div>
-        <div class="col-md-4">
-        <p>
-            <label for="size" class="sr-only">Size</label>
-            <input type="text" id="size" name="size" class="form-control"  required=""
-                   autofocus="">
-        </p>
-        </div>
-        <div class="col-md-4">
-        <p>
-            <label for="sex" class="sr-only">Sex</label>
-            <input type="text" id="sex" name="sex" class="form-control" required=""
-                   autofocus="">
-        </p>
-        </div>
-        <div class="col-md-4">
-        <p>
-            <label for="price" class="sr-only">Price</label>
-            <input type="text" id="price" name="price" class="form-control"required=""
-                   autofocus="">
-        </p>
-        </div>
-        <div class="col-md-4">
-        <p>
-            <label for="stock" class="sr-only">Stock</label>
-            <input type="text" id="stock" name="stock" class="form-control" required=""
-                   autofocus="">
-        </p>
-        </div>
-        <div class="col-md-4">
-        <p>
-            <label for="dateAdded" class="sr-only">Date</label>
-            <input type="date" id="dateAdded" name="dateAdded" class="form-control"  required=""
-                   autofocus="">
-        </p>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+
+        <button class="btn btn-lg btn-primary btn-block mt-3" type="submit">Submit</button>
     </form>
 </div>
 
-
-<footer>
-
-    <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-    <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col col-lg-2">
-            </div>
-            <div class="col col-lg-2">
-                <h5 class="text-dark text-center">Coral 9 © 2023</h5>
-            </div><div class="col col-lg-2">
-            <h5 class="text-dark text-center">Andrej Novkovikj</h5>
-        </div>
-            <div class="col col-lg-2">
-            </div>
-        </div>
-    </div>
-</footer>
 </body>
 </html>

@@ -11,8 +11,8 @@ public interface ProductService {
     Product findByDateAdded(LocalDate dateAdded);
     List<Product> listAll();
     List<Product> filter(String category, ProductSex sex);
-    Product create(Long id,String name, String description,String image_url, Long categoryId, Long manufacturerId, String color, ProductSize size, ProductSex sex, Double price, int stock, LocalDate dateAdded);
+    Product create(Long s,String name, String description,String image_url, Long categoryId, Long manufacturerId, String color, ProductSize size, ProductSex sex, Double price, int stock, LocalDate dateAdded);
     Product update(Long id,String name, String description,String image_url, Long categoryId, Long manufacturerId, String color, ProductSize size, ProductSex sex, Double price, int stock, LocalDate dateAdded);
     Product delete(Long id);
-
+    Long getNextId();
 }

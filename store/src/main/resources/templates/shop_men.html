@@ -14,23 +14,42 @@
    
 </style>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">HOME</a>
-    <div class="navbar-nav justify-content-center">
-      <a class="navbar-brand" href="/shop/">SHOP</a>
-      <a class="navbar-brand" href="#">ABOUT US</a>
-      <a class="navbar-brand" href="/login/">LOGIN</a>
-      <a class="navbar-brand" href="/register/">REGISTER</a>
-      <th:block th:if="${session.user!=null}">
-        <a class="navbar-brand" href="/shopping-cart">CART</a>
-        <a class="navbar-brand">LOGGED IN AS: </a>
-        <a class="navbar-brand"th:text="${session.user.username}" ></a>
-      </th:block>
-      <a class="navbar-brand" href="/logout">LOGOUT</a>
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Coral 9
+        <h1 class="text-white" style="font-size:10px;">Andrej Novkovikj</h1>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="/manufacturers" sec:authorize="hasRole('ROLE_ADMIN')">Manufacturers</a>
+          <a class="nav-link" href="/categories" sec:authorize="hasRole('ROLE_ADMIN')">Categories</a>
+          <a class="nav-link" href="/all-products" sec:authorize="hasRole('ROLE_ADMIN')">Products</a>
+          <a class="nav-link" href="/shop/">SHOP</a>
+          <a class="nav-link" href="#">ABOUT US</a>
+          <th:block sec:authorize="isAnonymous()">
+            <a class="nav-link" href="/login/">LOGIN</a>
+            <a class="nav-link" href="/register/">REGISTER</a>
+          </th:block>
+          <th:block sec:authorize="isAuthenticated()">
+            <a class="nav-link" href="/shopping-cart">CART</a>
+            <span class="nav-link">LOGGED IN AS:</span>
+            <a class="nav-link" th:text="${#authentication.name}"></a>
+            <a class="nav-link" href="/logout">LOGOUT</a>
+          </th:block>
+        </div>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</header>
+
+
+
   <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
   <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
   <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
@@ -87,38 +106,8 @@
                 
       
     </div>
-    <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-      <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
+
       
    
 </body>
-<footer>
-  <div class="container">
-  <div class="row justify-content-center">
-      <div class="col col-lg-2">
-      </div>
-      <div class="col col-lg-2">
-          <h5 class="text-dark text-center">Coral 9 © 2023</h5>
-      </div><div class="col col-lg-2">
-        <h5 class="text-dark text-center">Andrej Novkovikj</h5>
-    </div>
-      <div class="col col-lg-2">
-      </div>
-    </div>
-  </div>
-</footer>
 </html>

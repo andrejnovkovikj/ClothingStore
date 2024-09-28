@@ -1,10 +1,12 @@
 package com.example.store.service.impl;
 
 import com.example.store.model.Manufacturer;
+import com.example.store.model.OrderItem;
 import com.example.store.model.Product;
 import com.example.store.model.ProductCategory;
 import com.example.store.model.exceptions.InvalidProductCategoryIdException;
 import com.example.store.model.exceptions.InvalidProductIdException;
+import com.example.store.repository.OrderItemRepository;
 import com.example.store.repository.ProductCategoryRepository;
 import com.example.store.repository.ProductRepository;
 import com.example.store.service.ManufacturerService;

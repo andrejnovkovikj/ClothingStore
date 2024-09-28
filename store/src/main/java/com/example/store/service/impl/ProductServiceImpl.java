@@ -2,6 +2,7 @@ package com.example.store.service.impl;
 
 import com.example.store.model.*;
 import com.example.store.model.exceptions.InvalidProductIdException;
+import com.example.store.repository.OrderItemRepository;
 import com.example.store.repository.ProductCategoryRepository;
 import com.example.store.repository.ProductRepository;
 import com.example.store.service.ManufacturerService;
@@ -91,5 +92,11 @@ public class ProductServiceImpl implements ProductService {
         Product product=findById(id);
         this.productRepository.delete(product);
         return product;
+    }
+
+    @Override
+    public Long getNextId() {
+        Long maxId = productRepository.findMaxId();
+        return maxId != null ? maxId + 1 : 1;
     }
 }

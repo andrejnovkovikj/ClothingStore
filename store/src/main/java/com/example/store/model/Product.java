@@ -35,25 +35,17 @@ public class Product {
     private int stock;
 
     private LocalDate dateAdded;
+    @ManyToOne
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 
-
-    public Product(Long id,
-                   String name,
-                   String description,
-                   String image_url,
-                   ProductCategory category,
-                   Manufacturer manufacturer,
-                   String color, ProductSize size,
-                   ProductSex sex,
-                   Double price,
-                   int stock,
-                   LocalDate dateAdded) {
-        this.id=id;
+    public Product(Long id, String name, String description, String image_url, ProductCategory category, Manufacturer manufacturer, String color, ProductSize size, ProductSex sex, Double price, int stock, LocalDate dateAdded) {
+        this.id = id;
         this.name = name;
         this.description = description;
-        this.image_url=image_url;
+        this.image_url = image_url;
         this.category = category;
-        this.manufacturer=manufacturer;
+        this.manufacturer = manufacturer;
         this.color = color;
         this.size = size;
         this.sex = sex;
@@ -62,11 +54,32 @@ public class Product {
         this.dateAdded = dateAdded;
     }
 
-    public Product() {
-
+    public Product(Long id, String name, String description, String image_url, ProductCategory category, Manufacturer manufacturer, String color, ProductSize size, ProductSex sex, Double price, int stock, LocalDate dateAdded, Cart cart) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.image_url = image_url;
+        this.category = category;
+        this.manufacturer = manufacturer;
+        this.color = color;
+        this.size = size;
+        this.sex = sex;
+        this.price = price;
+        this.stock = stock;
+        this.dateAdded = dateAdded;
+        this.cart = cart;
     }
 
+    public Cart getCart() {
+        return cart;
+    }
 
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public Product() {
+    }
     public String getImage_url() {
         return image_url;
     }

@@ -5,6 +5,7 @@ import com.example.store.model.ProductCategory;
 import com.example.store.model.ProductSex;
 import org.hibernate.metamodel.model.convert.spi.JpaAttributeConverter;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -15,4 +16,6 @@ public interface ProductRepository extends JpaRepository<Product,Long>{
     Product findByName(String name);
     Product findByDateAdded(LocalDate dateAdded);
     List<Product> findAllByCategoryAndSex(ProductCategory category, ProductSex sex);
+    @Query("SELECT COALESCE(MAX(p.id), 0) FROM Product p")
+    Long findMaxId();
 }

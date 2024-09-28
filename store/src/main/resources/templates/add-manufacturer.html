@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,10 +11,6 @@
     body {
         background-color: rgb(123, 144, 238);
     }
-    .bg-new{
-        background: rgb(67, 97, 230);
-    }
-
 </style>
 <body>
 <header>
@@ -51,31 +47,36 @@
     </nav>
 </header>
 
-<div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-<h2 class="card-title text-center"> PRODUCTS</h2>
-<div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-<tr th:each="product:${products}" class="item">
-    <div class="container-fluid"  >
-        <div class="card-deck ">
-            <div class="row d-flex justify-content-center ">
-                <div class="card  bg-new col-8 m-4" style="width: 600px; height: 600px; padding: 7px;" >
-                    <div style="text-align: center;">
-                    <img class="card-img-top col-8 m-3 text-center" th:src="${product.image_url}"  style="width: 400px;height: 400px;">
-                        </div>
-                    <h4 class="card-title text-center"><td th:text="${product.name}">[products.name]</td></h4>
-                    <h6 class="card-text text-center"><td th:text="${product.size}">[products.size]</td></h6>
-                    <h6 class="card-text text-center"><td th:text="${product.price}">[products.price]</td> $</h6>
-                    <div style="text-align: center;">
-                    <button style="width: 434px;" class="btn btn-dark btnblock col-6 justify-content-center"><a style="color: white" th:href="@{'/product/'+ ${product.id}}">Go to the product page</a></button>
-                </div>
-                    </div>
 
-            </div>
+<div class="container">
+    <h1 th:if="${hasError}" th:text="${error}"></h1>
+</div>
+<div class="container">
+    <form class="form-signin mt-xl-5" method="post" action="/addManufacturer">
+        <h2 class="form-signin-heading">Add a manufacturer</h2>
+        <div class="col-md-4">
+            <p>
+                <label for="name" class="sr-only">Name</label>
+                <input type="text" id="name" name="name" class="form-control" required=""
+                       autofocus="">
+            </p>
         </div>
-    </div>
-
-</tr>
-
+        <div class="col-md-4">
+            <p>
+                <label for="description" class="sr-only">description</label>
+                <input type="text" id="description" name="description" class="form-control" required=""
+                       autofocus="">
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>
+                <label for="email" class="sr-only">email</label>
+                <input type="text" id="email" name="email" class="form-control" required=""
+                       autofocus="">
+            </p>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+    </form>
+</div>
 </body>
-
 </html>

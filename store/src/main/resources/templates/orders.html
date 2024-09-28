@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en"xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Your Orders</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </head>
@@ -11,10 +11,6 @@
     body {
         background-color: rgb(123, 144, 238);
     }
-    .bg-new{
-        background: rgb(67, 97, 230);
-    }
-
 </style>
 <body>
 <header>
@@ -51,31 +47,31 @@
     </nav>
 </header>
 
-<div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-<h2 class="card-title text-center"> PRODUCTS</h2>
-<div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
-<tr th:each="product:${products}" class="item">
-    <div class="container-fluid"  >
-        <div class="card-deck ">
-            <div class="row d-flex justify-content-center ">
-                <div class="card  bg-new col-8 m-4" style="width: 600px; height: 600px; padding: 7px;" >
-                    <div style="text-align: center;">
-                    <img class="card-img-top col-8 m-3 text-center" th:src="${product.image_url}"  style="width: 400px;height: 400px;">
-                        </div>
-                    <h4 class="card-title text-center"><td th:text="${product.name}">[products.name]</td></h4>
-                    <h6 class="card-text text-center"><td th:text="${product.size}">[products.size]</td></h6>
-                    <h6 class="card-text text-center"><td th:text="${product.price}">[products.price]</td> $</h6>
-                    <div style="text-align: center;">
-                    <button style="width: 434px;" class="btn btn-dark btnblock col-6 justify-content-center"><a style="color: white" th:href="@{'/product/'+ ${product.id}}">Go to the product page</a></button>
-                </div>
-                    </div>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Your Orders</h1>
+    <div id="order-list" class="row">
+        <div class="col-md-12">
+            <ul class="list-group">
+                <li class="list-group-item" th:each="order : ${orders}">
+                    <h4>Order ID: <span th:text="${order.id}"></span></h4>
+                    <p>Placed by: <span th:text="${order.user.username}"></span></p>
+                    <p>Total Price: <span th:text="${order.calculateTotal()}"></span></p>
 
+                    <p>Products:</p>
+                    <ul class="list-group">
+                        <li class="list-group-item" th:each="orderItem : ${order.orderItems}">
+                            <span th:text="${orderItem.product.name}"></span> -
+                            <span th:text="${orderItem.product.price}"></span> (Quantity: <span th:text="${orderItem.quantity}"></span>)
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div th:if="${#lists.isEmpty(orders)}" class="alert alert-warning mt-3">
+                <p>No orders found.</p>
             </div>
         </div>
     </div>
-
-</tr>
+</div>
 
 </body>
-
 </html>

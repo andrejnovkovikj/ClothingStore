@@ -1,7 +1,9 @@
 package com.example.store.web;
 
 import com.example.store.model.*;
+import com.example.store.repository.OrderItemRepository;
 import com.example.store.service.ManufacturerService;
+import com.example.store.service.OrderService;
 import com.example.store.service.ProductCategoryService;
 import com.example.store.service.ProductService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,12 +20,15 @@ public class ProductController {
     private final ManufacturerService manufacturerService;
     private final ProductService productService;
     private final ProductCategoryService productCategoryService;
+    private final OrderItemRepository orderItemRepository;
 
-    public ProductController(ManufacturerService manufacturerService, ProductService productService, ProductCategoryService productCategoryService) {
+    public ProductController(ManufacturerService manufacturerService, ProductService productService, ProductCategoryService productCategoryService, OrderItemRepository orderItemRepository) {
         this.manufacturerService = manufacturerService;
         this.productService = productService;
         this.productCategoryService = productCategoryService;
+        this.orderItemRepository = orderItemRepository;
     }
+
     @GetMapping(path = {"/shop"})
     public String showShop(){
         return "shop.html";
@@ -54,6 +59,8 @@ public class ProductController {
     @GetMapping("/add-product-form")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String addProductPage(Model model) {
+        Long nextId = productService.getNextId() + 1;
+        model.addAttribute("nextId", nextId);
         List<Manufacturer> manufacturers = this.manufacturerService.listAll();
         List<ProductCategory> categories = this.productCategoryService.listAll();
         model.addAttribute("manufacturers", manufacturers);
@@ -61,14 +68,18 @@ public class ProductController {
         model.addAttribute("bodyContent", "add-product");
         return "add-product.html";
     }
-    @GetMapping("/edit-product-form")
+    @GetMapping("/edit-product-form/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String editProductPage(Model model) {
+    public String editProductPage(@PathVariable Long id, Model model) {
+        Product product = this.productService.findById(id);
         List<Manufacturer> manufacturers = this.manufacturerService.listAll();
         List<ProductCategory> categories = this.productCategoryService.listAll();
+
+        model.addAttribute("product", product);
         model.addAttribute("manufacturers", manufacturers);
         model.addAttribute("categories", categories);
         model.addAttribute("bodyContent", "add-product");
+
         return "edit-product.html";
     }
 
@@ -89,6 +100,12 @@ public class ProductController {
             this.productService.create(id,name,description,image_url,categoryId,manufacturerId,color,size,sex,price,stock,LocalDate.parse(dateAdded));
         return "redirect:/home";
     }
+    @PostMapping("/delete")
+    public String deleteProduct(@RequestParam Long id) {
+        orderItemRepository.deleteByProductId(id);
+        this.productService.delete(id);
+        return "redirect:/home";
+    }
     @PostMapping("/edit")
     public String editProduct(
             @RequestParam Long id,
@@ -106,5 +123,10 @@ public class ProductController {
         this.productService.update(id,name,description,image_url,categoryId,manufacturerId,color,size,sex,price,stock,LocalDate.parse(dateAdded));
         return "redirect:/home";
     }
-
+    @GetMapping("/all-products")
+    public String showAllProducts(Model model) {
+        List<Product> products = this.productService.listAll();
+        model.addAttribute("products", products);
+        return "all-products.html";
+    }
 }
